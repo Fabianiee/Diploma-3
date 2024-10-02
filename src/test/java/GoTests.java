@@ -1,10 +1,10 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -16,17 +16,19 @@ public class GoTests {
 
     @Before
     public void setup() {
-        WebDriverManager.chromedriver().setup();
-          ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // Запуск в фоновом режиме, если нужно
-        driver = new ChromeDriver(options);
+        driver = Browser.getDriver("chrome"); // Или "yandex" для запуска в Яндекс.Браузере
         driver.get(baseUrl);
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
+
+        driver = new ChromeDriver();
+        driver.get(baseUrl);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     @After
     public void teardown() {
         if (driver != null) {
-            driver.quit(); // Закрытие браузера после завершения тестов
+            driver.quit();
         }
     }
 
@@ -35,15 +37,13 @@ public class GoTests {
         MainPage mainPage = new MainPage(driver);
         mainPage.goToProfile();
 
-        // Проверка, что мы на странице профиля
         String profileTitle = driver.getTitle();
         assertThat(profileTitle, equalTo("Личный кабинет"));
     }
 
     @Test
     public void testGoToConstructorFromProfile() {
-        testLoginWithExistingUser(); // Сначала логинимся
-
+        testLoginWithExistingUser();
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.goToConstructor();
 
@@ -65,9 +65,10 @@ public class GoTests {
         String welcomeMessage = driver.getPageSource();
         assertThat(welcomeMessage, containsString("Добро пожаловать"));
     }
+
     @Test
     public void testGoToConstructorFromLogo() {
-        testLoginWithExistingUser(); // Сначала логинимся
+        testLoginWithExistingUser();
 
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.clickLogo();
@@ -76,4 +77,4 @@ public class GoTests {
         String constructorTitle = driver.getTitle();
         assertThat(constructorTitle, equalTo("Конструктор"));
     }
- }
+}

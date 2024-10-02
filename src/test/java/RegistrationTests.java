@@ -1,10 +1,11 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
+
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,13 +16,14 @@ public class RegistrationTests {
 
     @Before
     public void setup() {
-        // Установка ChromeDriver с использованием WebDriverManager
-        WebDriverManager.chromedriver().setup();
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // Запуск в фоновом режиме, если нужно
-        driver = new ChromeDriver(options);
+        driver = Browser.getDriver("chrome"); // Или "yandex" для запуска в Яндекс.Браузере
         driver.get(baseUrl);
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.get(baseUrl);
+
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+
     }
 
     @After

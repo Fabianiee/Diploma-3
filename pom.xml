@@ -9,7 +9,7 @@
     <properties>
         <selenium.version>4.1.0</selenium.version>
         <junit.version>4.13.2</junit.version>
-        <allure.version>2.13.9</allure.version> <!-- Обновите на актуальную версию -->
+        <allure.version>2.13.9</allure.version> <!-- Используйте актуальную версию -->
     </properties>
 
     <dependencies>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.0.3</version>
+            <version>5.4.1</version>
         </dependency>
     </dependencies>
 
