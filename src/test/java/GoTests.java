@@ -1,3 +1,4 @@
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +17,7 @@ public class GoTests {
 
     @Before
     public void setup() {
-        driver = Browser.getDriver("chrome"); // Или "yandex" для запуска в Яндекс.Браузере
-        driver.get(baseUrl);
-        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
+          WebDriverManager.chromedriver().setup();
 
         driver = new ChromeDriver();
         driver.get(baseUrl);

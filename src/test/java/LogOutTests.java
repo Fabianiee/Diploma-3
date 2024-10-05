@@ -1,4 +1,4 @@
-import org.hamcrest.Matcher;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,9 +17,8 @@ public class LogOutTests {
 
     @Before
     public void setup() {
-        driver = Browser.getDriver("chrome"); // Или "yandex" для запуска в Яндекс.Браузере
-        driver.get(baseUrl);
-        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
+             WebDriverManager.chromedriver().setup();
+
         driver = new ChromeDriver();
         driver.get(baseUrl);
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -39,14 +38,12 @@ public class LogOutTests {
         LogOutPage logOutPage = new LogOutPage(driver);
         logOutPage.clickLogOutButton();
 
+                MainPage mainPage = new MainPage(driver);
 
-        MainPage mainPage = new MainPage(driver);
-
-
-        String loginButton = driver.getPageSource();
+              String loginButton = driver.getPageSource();
         assertThat(loginButton, containsString("Войти в аккаунт"));
 
-        String profileLink = driver.getPageSource();
+           String profileLink = driver.getPageSource();
         assertThat(profileLink, not(containsString("Личный кабинет")));
     }
 
@@ -64,4 +61,3 @@ public class LogOutTests {
         assertThat(welcomeMessage, containsString("Добро пожаловать"));
     }
 }
-

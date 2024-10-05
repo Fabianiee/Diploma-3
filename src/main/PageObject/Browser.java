@@ -1,6 +1,5 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 public class Browser {
     public static WebDriver getDriver(String browserType) {
@@ -8,13 +7,16 @@ public class Browser {
 
         switch (browserType.toLowerCase()) {
             case "chrome":
-              System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
-
+                String chromeDriverPath = System.getenv("CHROME_DRIVER_PATH");
+                if (chromeDriverPath != null) {
+                    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+                } else {
+                    throw new IllegalStateException("CHROME_DRIVER_PATH environment variable is not set.");
+                }
                 driver = new ChromeDriver();
                 break;
 
             case "yandex":
-
                 throw new UnsupportedOperationException("Yandex Browser support is not implemented yet.");
 
             default:
